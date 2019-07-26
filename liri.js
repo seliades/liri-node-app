@@ -1,10 +1,11 @@
 require("dotenv").config();
-var axios = require('axios')
-var keys = require("./keys.js");
-var Spotify = require('node-spotify-api');
-var spotify = new Spotify(keys.spotify);
-var inquirer = require("inquirer");
-var fs = require("fs");
+let axios = require('axios')
+let keys = require("./keys.js");
+let Spotify = require('node-spotify-api');
+let spotify = new Spotify(keys.spotify);
+let inquirer = require("inquirer");
+let fs = require("fs");
+let moment = require("moment");
 
 inputLine();
 
@@ -87,7 +88,7 @@ function concertThis(terms) {
                 console.log("Artist: " + concerts[i].lineup + "\n")
                 console.log("Venue Name: " + concerts[i].venue.name + "\n");
                 console.log("Venure Location: " + concerts[i].venue.city + ", " + concerts[i].venue.region + ", " + concerts[i].venue.country + "\n");
-                console.log("Date: " + concerts[i].datetime);
+                console.log("Date: " + moment(concerts[i].datetime, 'YYYY-MM-DD HH:mm:ss').format('MM/DD/YYYY'));
             }
             inputLine();
         })
@@ -106,7 +107,7 @@ function movieThis(terms) {
             console.log("\n");
             console.log("~~~~~~~~~~~~~~~ MOVIE INFO ~~~~~~~~~~~~~~~\n");
             console.log("Title: " + info.Title + "\n");
-            console.log("Released: " + info.Released + "\n");
+            console.log("Released: " + moment(info.Released, 'DD MMM YYYY').format('MM/DD/YYYY') + "\n");
             console.log("IMDB Rating: " + info.Ratings[0].Value + "\n");
             console.log("Rotten Tomatoes Rating: " + info.Ratings[1].Value + "\n");
             console.log("Produced in: " + info.Country + "\n");
