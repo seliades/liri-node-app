@@ -1,10 +1,12 @@
 require("dotenv").config();
-const axios = require('axios')
+var axios = require('axios')
 var keys = require("./keys.js");
-// var Spotify = require('node-spotify-api');
-// var spotify = new Spotify(keys.spotify);
+var Spotify = require('node-spotify-api');
+var spotify = new Spotify(keys.spotify);
 var inquirer = require("inquirer");
 var fs = require("fs");
+
+inputLine();
 
 function inputLine() {
     inquirer.prompt([
@@ -14,10 +16,11 @@ function inputLine() {
             message: 'Input a command and your search:'
         }
     ]).then(function (result) {
+        let rawInput = result.input + "\n";
         let input = result.input.split(" ");
         let command = input[0].toLowerCase();
         let terms = input.slice(1).join(" ").toLowerCase();
-
+        
         if (command === "spotify-this-song" || command === "spotify" || command === "s") {
             spotifyThis(terms);
             log(result.input);
@@ -38,22 +41,35 @@ function inputLine() {
             inputLine();
         }
 
+        function log() {
+            fs.appendFile("log.txt", rawInput, function (err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        }
     }).catch(function (error) {
         console.log(error);
     });
 }
 
 
-// function spotifyThis() {
-//     spotify.search({ type: 'track', query: 'All the Small Things' }, function (err, data) {
-//         if (err) {
-//             return console.log('Error occurred: ' + err);
-//         }
-
-//         console.log(data);
-//     });
-//     inputLine();
-// }
+function spotifyThis(terms) {
+    spotify.search({ type: 'track', query: terms, limit: 5 })
+    .then (function(response) {
+        let tracks = response.tracks;
+        for (let i = 0; i < tracks.items.length; i++) {
+        console.log("\n");
+        console.log("~~~~~~~~~~~~~~~ SONG INFO ~~~~~~~~~~~~~~~");
+        console.log("Artist name: " + tracks.items[i].artists[0].name);
+        console.log("Song title: " + tracks.items[i].name);
+        console.log("Album name: " + tracks.items[i].album.name);
+        console.log("Preview link: " + tracks.items[i].preview_url);
+        }
+    })
+   
+    inputLine();
+}
 
 function concertThis(terms) {
     axios.get("https://rest.bandsintown.com/artists/" + terms + "/events?app_id=codingbootcamp")
@@ -95,7 +111,4 @@ function movieThis(terms) {
         })
     inputLine();
 }
-
-function randomThis()
-
-inputLine();
+// function randomThis()
