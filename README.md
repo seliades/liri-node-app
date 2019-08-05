@@ -1,6 +1,6 @@
 # LIRI Node App 
 
-[Link to Video of Working Application]()
+[Link to Video of Working Application](https://drive.google.com/open?id=1cAh5j2djD8mYtS79xvJZlUpspg8N5B15)
 
 ## Description
 This LIRI Node application is a Language Interpretation and Recognition Interface that runs through the command line and utlizes JavaScript and several Node modules and APIs. LIRI accepts several commands and returns relavent information to the user based on the command and search query used. If you would like to clone this app you are welcome to, but you will need to supply your own Spotify API credentials in a `.env` file for it to work. On run will prompt for a command and your search, every word after command is the search parameters for the API requests sent out. Each search is logged to the log.txt file. After searching all returned information will then be displayed, and the app will continue to prompt.
